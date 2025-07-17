@@ -1,6 +1,13 @@
-
 def main():
-    numbers = list(map(float, input().split()))
+    try:
+        numbers = list(map(float, input().split()))
+    except:
+        print("Invalid input.")
+        return
+    
+    if not numbers:
+        print("Invalid input.")
+        return
 
     min_n = numbers[0]
     max_n = numbers[0]
