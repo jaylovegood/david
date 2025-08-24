@@ -7,7 +7,6 @@ from gtts import gTTS
 DEFAULT_LANG = os.getenv('DEFAULT_LANG', 'ko')
 app = Flask(__name__)
 
-
 @app.route("/", methods=["GET"])
 def get_home():
     return render_template("index.html")
