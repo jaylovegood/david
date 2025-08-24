@@ -33,5 +33,18 @@ def post_home():
     except Exception as e:
         return render_template("index.html", error=f"음성 생성 실패: {e}")
 
+@app.route('/menu', methods=["GET", "POST"])
+def menu():
+    if request.method == "GET":
+        return render_template("menu.html")
+    elif request.method == "POST":
+        menu = request.form.get("button")
+        if (menu == "americano"):
+            desc = "2샷 에스프레소가 들어갑니다."
+        elif (menu == "drip_coffee"):
+            desc = "핸드드립 방식으로 내린 커피입니다."
+        elif (menu == "green_tea"):
+            desc = "제주산 녹차잎으로 우립니다."
+        return render_template("menu.html", desc=desc)
 if __name__ == '__main__':
     app.run('0.0.0.0', 8080)
