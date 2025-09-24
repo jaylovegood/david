@@ -3,6 +3,7 @@ import os
 import base64
 from io import BytesIO
 from gtts import gTTS
+import socket
 
 DEFAULT_LANG = os.getenv('DEFAULT_LANG', 'ko')
 app = Flask(__name__)
@@ -17,8 +18,13 @@ def post_home():
     text = request.form.get('input_text')
     lang = request.form.get('lang', DEFAULT_LANG)
 
+    if app.debug:
+        hostname = '컴퓨터(인스턴스) : ' + socket.gethostname()
+    else:
+        hostname = ' '
+
     if not text:
-        return render_template("index.html", error="텍스트를 입력하세요.")
+        return render_template("index.html", error="텍스트를 입력하세요.", computername=hostname)
 
     try:
         
@@ -28,10 +34,10 @@ def post_home():
         fp.seek(0)
 
         audio_b64 = base64.b64encode(fp.read()).decode("ascii")
-        return render_template("index.html", audio=audio_b64)
+        return render_template("index.html", audio=audio_b64, computername=hostname)
 
     except Exception as e:
-        return render_template("index.html", error=f"음성 생성 실패: {e}")
+        return render_template("index.html", error=f"음성 생성 실패: {e}", computername=hostname)
 
 @app.route('/menu', methods=["GET", "POST"])
 def menu():
@@ -47,4 +53,4 @@ def menu():
             desc = "제주산 녹차잎으로 우립니다."
         return render_template("menu.html", desc=desc)
 if __name__ == '__main__':
-    app.run('0.0.0.0', 8080)
+    app.run('0.0.0.0', 8080, debug=True)
