@@ -64,3 +64,8 @@ def test1():
 @app.route("/test2")
 def test2():
     return render_template('test2.html')
+
+
+@app.route("/test3")
+def test3():
+    return render_template('test3.html')
